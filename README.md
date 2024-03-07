@@ -47,12 +47,12 @@ git clone https://github.com/UtkarshTiwari99/LeanAssignment
  com.utkarsh.leanassignment     # Root Package
     .
     ├──configurations         # Configuration for secuirty chain.
-    ├── controller            # controllers to handel routing of requests 
-    ├── dto                   # data tranfer object for both requests and response
-    ├── exception             # Custom Exceptions
-    ├── filters               # filter to intercept requests
-    ├── model                 # Model data classes 
-    ├── respository           # Layer to interact with data models using JPA
-    ├── service               # services for business logic 
-    ├── utils                 # utils for extra code 
-    ├─ SpringBootApplication  # Main class for Spring boot
+    ├── controller            # controllers to handel routing of requests.
+    ├── dto                   # data tranfer object for both requests and response.
+    ├── exception             # Custom Exceptions.
+    ├── filters               # filter to intercept requests.
+    ├── model                 # Model data classes. 
+    ├── respository           # Layer to interact with data models using JPA.
+    ├── service               # services for business logic. 
+    ├── utils                 # utils for extra code. 
+    ├─ SpringBootApplication  # Main class for Spring boot.
