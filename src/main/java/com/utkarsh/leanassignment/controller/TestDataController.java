@@ -18,7 +18,11 @@ import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @RestController
@@ -127,10 +131,13 @@ public class TestDataController {
     }
 
 
-    @PostMapping("/testResults/")
+    @PostMapping("/result/")
     public ResponseEntity<?> createTestResult(Authentication authentication, @RequestBody TestResultPostRequest testResultPostRequest) {
         try {
-            testResultRepository.insertBySQL(testResultPostRequest.getDate(), testResultPostRequest.getTestId(), authentication.getName());
+            var localDate = LocalDate.parse(testResultPostRequest.getDate(), DateTimeFormatter.ofPattern("MM/dd/yyyy"));
+            var instant=localDate.atStartOfDay(ZoneId.systemDefault()).toInstant();
+            Date date = Date.from(instant);
+            testResultRepository.insertBySQL(date, testResultPostRequest.getTestId(), authentication.getName());
         } catch (Exception e) {
             System.out.println(e.getMessage());
             return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).build();
@@ -142,7 +149,7 @@ public class TestDataController {
     /**
      * |5| Store User Test Result
      **/
-    @PutMapping("/testResults/")
+    @PutMapping("/testDataResult")
     public ResponseEntity<?> updateTestResult(Authentication authentication, @RequestBody TestResultPutRequest testResultPutRequest) {
         try {
             testResultRepository.updateBySQL(testResultPutRequest.getAppend_questions(), testResultPutRequest.getAppend_options(), testResultPutRequest.getTestId(), authentication.getName(),testResultPutRequest.getMarks());

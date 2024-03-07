@@ -10,7 +10,7 @@ import java.util.Date;
 @AllArgsConstructor
 @NoArgsConstructor
 public class TestResultPostRequest {
-    private Date date;
+    private String date;
     private String testId;
     private String userName;
 }

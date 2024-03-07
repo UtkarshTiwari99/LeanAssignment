@@ -23,19 +23,4 @@ public class LogInController{
         return "login";
     }
 
-    /**
-     * |3| Get Specific Question By TestId of Test and questionNumber
-     **/
-    @RequestMapping(value = "/quiz/{testId}/questions/{questionNumber}",method = RequestMethod.GET)
-    public String getQuestion(Model model,
-                              @PathVariable("questionNumber") Integer questionNumber, @PathVariable("testId") String testId
-    ) {
-        var data = testDataRepository.findQuestions(questionNumber, testId);
-        if (data.size() != 1)
-            return null;
-        var testData=data.get(0);
-        model.addAttribute("testData",testData);
-        return "quiz";
-    }
-
 }
