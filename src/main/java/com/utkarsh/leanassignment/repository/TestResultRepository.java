@@ -18,8 +18,8 @@ public interface TestResultRepository extends PagingAndSortingRepository<TestRes
 //    @Query("UPDATE TestResult SET questions = CONCAT(questions, :appendQuestions),options = CONCAT(options, :appendOptions) WHERE testData.testId = :testId AND user.username = :userName")
     @Modifying
     @Transactional
-    @Query("UPDATE TestResult tr SET tr.questions = CONCAT(tr.questions, :appendQuestions), tr.options = CONCAT(tr.options, :appendOptions) WHERE tr.date = ( SELECT MAX(t2.date) FROM TestResult t2 WHERE t2.testData.testId = :testId AND t2.user.username = :userName ) AND tr.testData.testId = :testId AND tr.user.username = :userName")
-    void updateBySQL(@Param("appendQuestions") String append_questions,@Param("appendOptions") String append_options,@Param("testId") String testId,@Param("userName") String userName);
+    @Query("UPDATE TestResult tr SET tr.questions = CONCAT(tr.questions, :appendQuestions), tr.options = CONCAT(tr.options, :appendOptions), tr.totalMarks = tr.totalMarks+ :marks WHERE tr.date = ( SELECT MAX(t2.date) FROM TestResult t2 WHERE t2.testData.testId = :testId AND t2.user.username = :userName ) AND tr.testData.testId = :testId AND tr.user.username = :userName")
+    void updateBySQL(@Param("appendQuestions") String append_questions,@Param("appendOptions") String append_options,@Param("testId") String testId,@Param("userName") String userName,@Param("marks") Integer marks);
 
     @Modifying
     @Transactional

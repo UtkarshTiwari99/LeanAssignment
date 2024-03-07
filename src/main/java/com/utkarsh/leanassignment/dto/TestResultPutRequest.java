@@ -12,4 +12,5 @@ public class TestResultPutRequest {
     String append_questions;
     String append_options;
     String testId;
+    Integer marks;
 }

@@ -18,6 +18,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -53,24 +54,56 @@ public class TestDataController {
     }
 
     /**
+     * |2| Get Specific Question By TestId of Test and questionNumber
+     **/
+    @RequestMapping(value = "startTest/{testId}",method = RequestMethod.GET)
+    public ResponseEntity<TestData> startTest(@PathVariable("testId") String testId) {
+        TestData testData;
+        try{
+            var data = testDataRepository.findQuestions(1, testId);
+            if (data.size() != 1)
+                throw new Exception("bad request");
+            testData=data.get(0);
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).build();
+        }
+        return ResponseEntity.status(HttpStatus.ACCEPTED).body(testData);
+    }
+
+    /**
      * |3| Get Specific Question By TestId of Test and questionNumber
      **/
     @RequestMapping(value = "/tests/{testId}/questions/{questionNumber}",method = RequestMethod.GET)
-    public TestData getQuestion(
+    public ResponseEntity<TestData> getQuestion(
             @PathVariable("questionNumber") Integer questionNumber, @PathVariable("testId") String testId
     ) {
-        var data = testDataRepository.findQuestions(questionNumber, testId);
-        if (data.size() != 1)
-            return null;
-        return data.get(0);
+        TestData testData;
+        try{
+            var data = testDataRepository.findQuestions(questionNumber, testId);
+            if (data.size() != 1)
+                throw new Exception("bad request");
+            testData=data.get(0);
+        } catch (Exception e) {
+        System.out.println(e.getMessage());
+        return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).build();
+        }
+        return ResponseEntity.status(HttpStatus.ACCEPTED).body(testData);
     }
 
     /**
      * |6| Get Result by Test TestId
      **/
     @GetMapping("/testResult/{testId}")
-    public List<TestResultDTO> getTestResult(@RequestParam(required = false) String time, Authentication authentication, @PathVariable("testId") String testId) {
-        return testResultRepository.getBySQL(testId, authentication.getName());
+    public ResponseEntity<List<TestResultDTO>> getTestResult(@RequestParam(required = false) String time, Authentication authentication, @PathVariable("testId") String testId) {
+        List<TestResultDTO> list=new ArrayList<>();
+        try {
+            list=testResultRepository.getBySQL(testId, authentication.getName());
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).build();
+        }
+        return ResponseEntity.status(HttpStatus.ACCEPTED).body(testResultRepository.getBySQL(testId, authentication.getName()));
     }
 
 
@@ -78,14 +111,19 @@ public class TestDataController {
      * |7| Get All Result For Users Using Pagination
      **/
     @GetMapping("/testResults")
-    public List<TestResult> getAllTestResult(Authentication authentication, @RequestParam(required = false) Integer page) {
+    public ResponseEntity<List<TestResult>> getAllTestResult(Authentication authentication, @RequestParam(required = false) Integer page) {
         Pageable pageable;
-        System.out.println(page);
-        if (page != null && page > 0) {
-            pageable = PageRequest.of(page - 1, 2, Sort.by("date"));
-            return testResultRepository.findByUser_Username(authentication.getName(), pageable);
+        List<TestResult> list=new ArrayList<TestResult>();
+        try {
+            if (page != null && page > 0) {
+                pageable = PageRequest.of(page - 1, 2, Sort.by("date"));
+                list= testResultRepository.findByUser_Username(authentication.getName(), pageable);
+            }
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).build();
         }
-        return testResultRepository.findByUser_Username(authentication.getName());
+        return ResponseEntity.status(HttpStatus.ACCEPTED).body(list);
     }
 
 
@@ -107,7 +145,7 @@ public class TestDataController {
     @PutMapping("/testResults/")
     public ResponseEntity<?> updateTestResult(Authentication authentication, @RequestBody TestResultPutRequest testResultPutRequest) {
         try {
-            testResultRepository.updateBySQL(testResultPutRequest.getAppend_questions(), testResultPutRequest.getAppend_options(), testResultPutRequest.getTestId(), authentication.getName());
+            testResultRepository.updateBySQL(testResultPutRequest.getAppend_questions(), testResultPutRequest.getAppend_options(), testResultPutRequest.getTestId(), authentication.getName(),testResultPutRequest.getMarks());
         } catch (Exception e) {
             System.out.println(e.getMessage());
             return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).build();
