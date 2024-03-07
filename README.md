@@ -49,7 +49,7 @@ git clone https://github.com/UtkarshTiwari99/LeanAssignment
 ```
 
  ## Project Structure
-
+```bash
  com.utkarsh.leanassignment  # Root Package
 ├── configurations
 │   ├── SecurityConfig.java     # Configuration for security chain (e.g., JWT, OAuth)
@@ -71,3 +71,4 @@ git clone https://github.com/UtkarshTiwari99/LeanAssignment
 │   ├── CommonUtils.java        # Utility class with common helper methods
 └── SpringBootApplication.java  # Main class for starting the Spring Boot application
 └── README.md                 # Project documentation and setup instructions
+```
