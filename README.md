@@ -24,13 +24,19 @@ The application boasts various features, including:
    - Overall Results: 
    Access to all test results is provided in a paginated and chronologically sorted format.
 
+## REST API ENDPOINTS
+
+- Data Upload - POST "localhost:6795/upload"
+- Question Retrieval - GET localhost:6795/tests/{testId}/questions/{questionNumber}
+- Result Storage - PUT localhost:6795/testDataResult
+- Individual Results - GET localhost:6795/testResult/{testId}
+- Overall Results - GET localhost:6795/testResults?page={page}
+
 ## Tech Stack
 
 - [Java] - First class and official programming language for development.
 - [Spring boot] - Used backend appliction 
 - [Postgres SQL] - SQL database with ACID properties. 
-
-## Video demonstrations
 
 ## RUN LOCALLY
 
@@ -43,16 +49,26 @@ git clone https://github.com/UtkarshTiwari99/LeanAssignment
 ```
 
  ## Project Structure
-
- com.utkarsh.leanassignment     # Root Package
-    .
-    ├──configurations         # Configuration for secuirty chain.
-    ├── controller            # controllers to handel routing of requests.
-    ├── dto                   # data tranfer object for both requests and response.
-    ├── exception             # Custom Exceptions.
-    ├── filters               # filter to intercept requests.
-    ├── model                 # Model data classes. 
-    ├── respository           # Layer to interact with data models using JPA.
-    ├── service               # services for business logic. 
-    ├── utils                 # utils for extra code. 
-    ├─ SpringBootApplication  # Main class for Spring boot.
+```bash
+ com.utkarsh.leanassignment  # Root Package
+├── configurations
+│   ├── SecurityConfig.java     # Configuration for security chain (JWT)
+├── controllers
+│   ├── TestDataController.java     # Controller for handling user-related requests
+├── dto
+│   ├── QuestionDto.java           # Data Transfer Object for user data
+├── exceptions
+│   ├── CustomException.java     # Base class for custom exceptions
+├── filters
+│   ├── Filter.java      # Filter for logging requests/responses
+├── model
+│   ├── User.java              # Data model class representing a user
+├── repositories
+│   ├── UserRepository.java     # Interface for interacting with user data using JPA
+├── services
+│   ├── UserService.java        # Service class encapsulating user-related business logic
+├── utils
+│   ├── CommonUtils.java        # Utility class with common helper methods
+└── SpringBootApplication.java  # Main class for starting the Spring Boot application
+└── README.md                 # Project documentation and setup instructions
+```
