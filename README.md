@@ -52,7 +52,7 @@ git clone https://github.com/UtkarshTiwari99/LeanAssignment
 ```bash
  com.utkarsh.leanassignment  # Root Package
 ├── configurations
-│   ├── SecurityConfig.java     # Configuration for security chain (e.g., JWT, OAuth)
+│   ├── SecurityConfig.java     # Configuration for security chain (JWT)
 ├── controllers
 │   ├── TestDataController.java     # Controller for handling user-related requests
 ├── dto
