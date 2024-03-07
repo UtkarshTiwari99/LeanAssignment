@@ -21,8 +21,10 @@ public class Question {
 
     @Column
     private Integer questionNumber;
+
     @Column
     private String statement;
+
     @Column
     private Integer marks;
 

@@ -3,6 +3,7 @@ package com.utkarsh.leanassignment.controller;
 import com.utkarsh.leanassignment.dto.TestResultDTO;
 import com.utkarsh.leanassignment.dto.TestResultPostRequest;
 import com.utkarsh.leanassignment.dto.TestResultPutRequest;
+import com.utkarsh.leanassignment.model.Question;
 import com.utkarsh.leanassignment.model.TestData;
 import com.utkarsh.leanassignment.model.TestResult;
 import com.utkarsh.leanassignment.repository.TestDataRepository;
@@ -61,38 +62,40 @@ public class TestDataController {
      * |2| Get Specific Question By TestId of Test and questionNumber
      **/
     @RequestMapping(value = "startTest/{testId}",method = RequestMethod.GET)
-    public ResponseEntity<TestData> startTest(@PathVariable("testId") String testId) {
-        TestData testData;
+    public ResponseEntity<Question> startTest(@PathVariable("testId") String testId) {
+        Question question;
         try{
             var data = testDataRepository.findQuestions(1, testId);
-            if (data.size() != 1)
-                throw new Exception("bad request");
-            testData=data.get(0);
+            if(data.size()!=1)
+                throw new Exception("Bad Request");
+            var testData=data.get(0);
+            question = testData.getQuestions().stream().filter((q)->q.getQuestionNumber()==1).findFirst().get();
         } catch (Exception e) {
             System.out.println(e.getMessage());
             return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).build();
         }
-        return ResponseEntity.status(HttpStatus.ACCEPTED).body(testData);
+        return ResponseEntity.status(HttpStatus.ACCEPTED).body(question);
     }
 
     /**
      * |3| Get Specific Question By TestId of Test and questionNumber
      **/
     @RequestMapping(value = "/tests/{testId}/questions/{questionNumber}",method = RequestMethod.GET)
-    public ResponseEntity<TestData> getQuestion(
+    public ResponseEntity<Question> getQuestion(
             @PathVariable("questionNumber") Integer questionNumber, @PathVariable("testId") String testId
     ) {
-        TestData testData;
+        Question question;
         try{
-            var data = testDataRepository.findQuestions(questionNumber, testId);
-            if (data.size() != 1)
-                throw new Exception("bad request");
-            testData=data.get(0);
+            var data = testDataRepository.findQuestions(1, testId);
+            if(data.size()!=1)
+                throw new Exception("Bad Request");
+            var testData=data.get(0);
+            question = testData.getQuestions().stream().filter((q)->q.getQuestionNumber()==1).findFirst().get();
         } catch (Exception e) {
-        System.out.println(e.getMessage());
-        return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).build();
+            System.out.println(e.getMessage());
+            return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).build();
         }
-        return ResponseEntity.status(HttpStatus.ACCEPTED).body(testData);
+        return ResponseEntity.status(HttpStatus.ACCEPTED).body(question);
     }
 
     /**
